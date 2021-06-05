@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Santander_Tecnologia.Models.Meetup>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Administración de Meetups</h1>
+
+<br />
+
+<p>
+    <a asp-action="Create">Create</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MeetupDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Attendees)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Temperature)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BeerBoxQuantity)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MeetupDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Attendees)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Temperature)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BeerBoxQuantity)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

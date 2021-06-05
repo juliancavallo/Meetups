@@ -1,0 +1,41 @@
+﻿@model Santander_Tecnologia.Models.User
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+
+<div class="box-container">
+    <form asp-action="Login">
+        <div class="box">
+            <h1>Login</h1>
+
+            <br />
+
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" type="text" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" type="password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <br />
+
+                <input type="submit" value="Login" class="btn btn-primary" />
+           
+        </div>
+    </form>
+</div>
+
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <script> alert("@ViewBag.ErrorMessage");</script>
+}
