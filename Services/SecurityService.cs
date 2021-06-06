@@ -3,15 +3,15 @@ using System.Text;
 
 namespace Services
 {
-    public class SecurityService
+    public class SecurityService : ISecurityService
     {
-        public string Encriptar(string texto)
+        public string Crypt(string texto)
         {
             byte[] bytes = Encoding.Unicode.GetBytes(texto);
             return Convert.ToBase64String(bytes);
         }
 
-        public string Desencriptar(string texto)
+        public string Decrypt(string texto)
         {
             byte[] bytes = Convert.FromBase64String(texto);
             return Encoding.Unicode.GetString(bytes);

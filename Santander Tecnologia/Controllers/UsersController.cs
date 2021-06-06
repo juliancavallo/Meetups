@@ -7,16 +7,18 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Santander_Tecnologia.Data;
 using Santander_Tecnologia.Models;
+using Services;
 
 namespace Santander_Tecnologia.Controllers
 {
     public class UsersController : Controller
     {
         private readonly Santander_TecnologiaContext _context;
-
-        public UsersController(Santander_TecnologiaContext context)
+        private ISecurityService _securityService;
+        public UsersController(Santander_TecnologiaContext context, ISecurityService securityService)
         {
             _context = context;
+            _securityService = securityService;
         }
 
         // GET: Users
@@ -58,6 +60,7 @@ namespace Santander_Tecnologia.Controllers
         {
             if (ModelState.IsValid)
             {
+                user.Password = _securityService.Crypt(user.Password);
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -97,6 +100,7 @@ namespace Santander_Tecnologia.Controllers
             {
                 try
                 {
+                    user.Password = _securityService.Crypt(user.Password);
                     _context.Update(user);
                     await _context.SaveChangesAsync();
                 }

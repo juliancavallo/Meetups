@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Santander_Tecnologia.Data;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Services;
 
 namespace Santander_Tecnologia
 {
@@ -28,8 +29,7 @@ namespace Santander_Tecnologia
         {
             services.AddControllersWithViews();
 
-            services.Configure<RazorViewEngineOptions>(o => { 
-            });
+            this.RegisterServicesForDI(services);
 
             services.AddDbContext<Santander_TecnologiaContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("Santander_TecnologiaContext")));
@@ -61,6 +61,11 @@ namespace Santander_Tecnologia
                     name: "default",
                     pattern: "{controller=Login}/{action=Login}/{id?}");
             });
+        }
+
+        private void RegisterServicesForDI(IServiceCollection services)
+        {
+            services.AddScoped<ISecurityService, SecurityService>();
         }
     }
 }

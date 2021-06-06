@@ -20,7 +20,7 @@ namespace Santander_Tecnologia.Data
                     Name = "Usuario",
                     LastName ="Administrador",
                     UserName = "admin",
-                    Password = new SecurityService().Encriptar("1234")
+                    Password = new SecurityService().Crypt("1234")
                 },
             };
 
