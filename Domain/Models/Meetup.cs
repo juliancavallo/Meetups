@@ -10,28 +10,23 @@ namespace Domain.Models
     public class Meetup
     {
         public int Id { get; set; }
-        [Display(ResourceType = typeof(Resources.Resource), Name = "MeetupDate")]
+
         public DateTime MeetupDate { get; set; }
 
-        [Display(ResourceType = typeof(Resources.Resource), Name = "Temperature")]
         public decimal Temperature { get; set; }
 
         [ForeignKey("OrganizerId")]
-        [Display(ResourceType = typeof(Resources.Resource), Name = "Organizer")]
         public User Organizer { get; set; }
 
         public int OrganizerId { get; set; }
 
-        [Display(ResourceType = typeof(Resources.Resource), Name = "Description")]
         [Required()]
         public string Description { get; set; }
 
         [NotMapped]
-        [Display(ResourceType = typeof(Resources.Resource), Name = "Attendees")]
         public ICollection<MeetupUsers> Attendees { get; set; }
 
         [NotMapped]
-        [Display(ResourceType = typeof(Resources.Resource), Name = "BeerBoxQuantity")]
         public int BeerBoxQuantity
         {
             get

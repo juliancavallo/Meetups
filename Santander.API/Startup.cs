@@ -25,8 +25,9 @@ namespace Santander.API
         {
             services.AddControllers();
             services.AddScoped<ISecurityService, SecurityService>();
-            services.AddScoped<IMeetupsService, MeetupsService>();
+            services.AddScoped<IMeetupService, MeetupService>();
             services.AddScoped<IWeatherAPIService, WeatherAPIService>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddDbContext<Santander_TecnologiaContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("Santander_TecnologiaContext")));

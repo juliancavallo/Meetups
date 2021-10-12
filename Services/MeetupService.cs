@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Domain.Filters;
+using Domain.Models;
 using Domain.Requests;
 using Domain.Responses;
 using Microsoft.EntityFrameworkCore;
@@ -13,23 +14,32 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-    public class MeetupsService : IMeetupsService
+    public class MeetupService : IMeetupService
     {
         private readonly Santander_TecnologiaContext context;
         private readonly IWeatherAPIService weatherAPIService;
 
-        public MeetupsService(Santander_TecnologiaContext context, IWeatherAPIService weatherAPIService)
+        public MeetupService(Santander_TecnologiaContext context, IWeatherAPIService weatherAPIService)
         {
             this.context = context;
             this.weatherAPIService = weatherAPIService;
         }
 
-        public List<Meetup> Get()
+        public List<Meetup> Get(MeetupSearchFilter filter)
         {
-            return context.Meetup
-                .Include(m => m.Organizer)
-                .Include("Attendees.User")
-                .ToList();
+            var q = context.Meetup.Include(m => m.Organizer).Include("Attendees.User");
+
+            if (!string.IsNullOrWhiteSpace(filter.Description))
+                q = q.Where(x => x.Description.Contains(filter.Description));
+
+            if (filter.DateFrom != null)
+                q = q.Where(x => x.MeetupDate > filter.DateFrom);
+
+
+            if (filter.DateTo != null)
+                q = q.Where(x => x.MeetupDate < filter.DateTo);
+
+            return q.ToList();
         }
 
         public int Create(MeetupRequest request)
@@ -44,13 +54,7 @@ namespace Services
                     OrganizerId = 1
                 };
 
-                ClearAttendees(meetup);
-
-                foreach(var id in request.Attendees)
-                {
-                    var user = context.User.FirstOrDefault(x => x.Id == id);
-                    meetup.Attendees.Add(new MeetupUsers() { Meetup = meetup, User = user });
-                }
+                AddAttendees(meetup, request.Attendees);
 
                 context.Add(meetup);
                 context.SaveChanges();

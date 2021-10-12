@@ -5,7 +5,7 @@ namespace Services
 {
     public interface ISecurityService
     {
-        string Crypt(string texto);
+        string Encrypt(string texto);
         string Decrypt(string texto);
     }
 }
