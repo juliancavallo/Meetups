@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Domain.Exceptions;
 using Domain.Filters;
 using Domain.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,6 +14,7 @@ using Services;
 namespace Santander.API.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class UsersController : ControllerBase
     {

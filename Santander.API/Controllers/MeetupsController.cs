@@ -6,6 +6,7 @@ using Domain.Exceptions;
 using Domain.Filters;
 using Domain.Models;
 using Domain.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Services;
@@ -13,6 +14,7 @@ using Services;
 namespace Santander.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class MeetupsController : ControllerBase
     {

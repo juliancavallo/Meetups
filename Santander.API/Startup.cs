@@ -8,6 +8,9 @@ using Providers;
 using Services;
 using Microsoft.OpenApi.Models;
 using System;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Santander.API
 {
@@ -24,10 +27,8 @@ namespace Santander.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddScoped<ISecurityService, SecurityService>();
-            services.AddScoped<IMeetupService, MeetupService>();
-            services.AddScoped<IWeatherAPIService, WeatherAPIService>();
-            services.AddScoped<IUserService, UserService>();
+            
+            this.RegisterDI(services);
 
             services.AddDbContext<Santander_TecnologiaContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("Santander_TecnologiaContext")));
@@ -37,6 +38,19 @@ namespace Santander.API
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                   options.TokenValidationParameters = new TokenValidationParameters
+                   {
+                       ValidateIssuer = false,
+                       ValidateAudience = false,
+                       ValidateLifetime = true,
+                       ValidateIssuerSigningKey = true,
+                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                   };
+                });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -47,6 +61,8 @@ namespace Santander.API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseRouting();
 
@@ -74,15 +90,42 @@ namespace Santander.API
                 {
                     Title = $"SantanderTecnologia {groupName}",
                     Version = groupName,
-                    Description = "Meetup Beers API",
-                    Contact = new OpenApiContact
+                    Description = "Meetup Beers API"
+                });
+
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Scheme = "bearer",
+                    Description = "Please insert JWT token into field"
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
                     {
-                        Name = "Julian Cavallo",
-                        Email = string.Empty,
-                        Url = new Uri("https://foo.com/"),
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
                     }
                 });
             });
+        }
+
+        private void RegisterDI(IServiceCollection services)
+        {
+            services.AddScoped<ISecurityService, SecurityService>();
+            services.AddScoped<IMeetupService, MeetupService>();
+            services.AddScoped<IWeatherAPIService, WeatherAPIService>();
+            services.AddScoped<IUserService, UserService>();
+
         }
     }
 }

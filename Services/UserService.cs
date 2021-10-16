@@ -95,6 +95,11 @@ namespace Services
             {
                 throw ex;
             }
-        }        
+        }   
+        
+        public bool ValidateLogin(LoginRequest loginDetails)
+        {
+            return context.User.Any(x => x.UserName == loginDetails.User && x.Password == loginDetails.Password);
+        }
     }
 }

@@ -16,5 +16,7 @@ namespace Services
         void Delete(int id);
 
         void Update(UserRequest request);
+
+        bool ValidateLogin(LoginRequest loginDetails);
     }
 }
