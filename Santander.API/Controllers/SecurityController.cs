@@ -1,10 +1,12 @@
-﻿using Domain.Models;
+﻿using Domain.Exceptions;
+using Domain.Models;
 using Domain.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Services;
+using Services.Logger;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -21,28 +23,44 @@ namespace Santander.API.Controllers
         private readonly IConfiguration config;
         private readonly IUserService userService;
         private readonly ISecurityService securityService;
-        private readonly ILogger<SecurityController> logger;
+        private readonly ILoggerService logger;
 
-        public SecurityController(IConfiguration config, IUserService userService, ISecurityService securityService)
+        public SecurityController(IConfiguration config, IUserService userService, ISecurityService securityService, ILoggerService logger)
         {
             this.config = config;
             this.userService = userService;
             this.securityService = securityService;
+            this.logger = logger;
         }
 
         [HttpPost]
         [Route("Login", Name ="Login")]
         public ActionResult Login(LoginRequest loginDetails)
         {
-            bool result = ValidateUser(loginDetails);
-            if (result)
+            try
             {
-                var tokenString = GenerateJWT();
-                return Ok(new { token = tokenString });
+                bool result = ValidateUser(loginDetails);
+                if (result)
+                {
+                    var tokenString = GenerateJWT();
+                    logger.LogInformation("SecurityController > Login. OK. Token = " + tokenString);
+                    return Ok(new { token = tokenString });
+                }
+                else
+                {
+                    logger.LogError("SecurityController > Login. ERROR 401");
+                    return Unauthorized();
+                }
             }
-            else
+            catch (BadRequestException ex)
             {
-                return Unauthorized();
+                logger.LogError("SecurityController > Login. ERROR 400", ex);
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("SecurityController > Login. ERROR 500", ex);
+                return StatusCode((int)System.Net.HttpStatusCode.InternalServerError);
             }
         }
 

@@ -11,6 +11,7 @@ using System;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Services.Logger;
 
 namespace Santander.API
 {
@@ -125,7 +126,7 @@ namespace Santander.API
             services.AddScoped<IMeetupService, MeetupService>();
             services.AddScoped<IWeatherAPIService, WeatherAPIService>();
             services.AddScoped<IUserService, UserService>();
-
+            services.AddScoped<ILoggerService, LoggerService>();
         }
     }
 }

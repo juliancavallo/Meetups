@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Services;
+using Services.Logger;
 
 namespace Santander.API.Controllers
 {
@@ -18,11 +19,12 @@ namespace Santander.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly ILogger<UsersController> logger;
+
+        private readonly ILoggerService logger;
         private readonly IUserService userService;
         private readonly ISecurityService securityService;
 
-        public UsersController(ILogger<UsersController> logger, IUserService userService, ISecurityService securityService)
+        public UsersController(ILoggerService logger, IUserService userService, ISecurityService securityService)
         {
             this.logger = logger;
             this.userService = userService;
@@ -34,10 +36,18 @@ namespace Santander.API.Controllers
         {
             try
             {
-                return Ok(userService.Get(filter));
+                var result = userService.Get(filter);
+                logger.LogInformation("UsersController > Get. OK");
+                return Ok(result);
+            }
+            catch (BadRequestException ex)
+            {
+                logger.LogError("UsersController > Get. ERROR 400", ex);
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
+                logger.LogError("UsersController > Get. ERROR 500", ex);
                 return StatusCode((int)System.Net.HttpStatusCode.InternalServerError);
             }
         }
@@ -61,14 +71,19 @@ namespace Santander.API.Controllers
 
                 user.Password = securityService.Encrypt(user.Password);
 
-                return Ok(userService.Create(user));
+                int userId = userService.Create(user);
+
+                logger.LogInformation("UsersController > Create. OK. UserId: " + userId);
+                return Ok(userId);
             }
             catch (BadRequestException ex)
             {
+                logger.LogError("UsersController > Create. ERROR 400", ex);
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
+                logger.LogError("UsersController > Create. ERROR 500", ex);
                 return StatusCode((int)System.Net.HttpStatusCode.InternalServerError);
             }
         }
@@ -95,14 +110,19 @@ namespace Santander.API.Controllers
 
                 user.Password = securityService.Encrypt(user.Password);
                 userService.Update(user);
+
+                logger.LogInformation("UsersController > Create. OK. UserId: " + user.Id);
+
                 return Ok();
             }
             catch (BadRequestException ex)
             {
+                logger.LogError("UsersController > Update. ERROR 400", ex);
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
+                logger.LogError("UsersController > Update. ERROR 500", ex);
                 return StatusCode((int)System.Net.HttpStatusCode.InternalServerError);
             }
         }
@@ -116,14 +136,19 @@ namespace Santander.API.Controllers
                     throw new BadRequestException("id must be greater than 0");
 
                 userService.Delete(id);
+
+                logger.LogInformation("UsersController > Delete. OK. UserId: " + id);
+
                 return Ok();
             }
             catch (BadRequestException ex)
             {
+                logger.LogError("UsersController > Delete. ERROR 400", ex);
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
+                logger.LogError("UsersController > Delete. ERROR 500", ex);
                 return StatusCode((int)System.Net.HttpStatusCode.InternalServerError);
             }
         }

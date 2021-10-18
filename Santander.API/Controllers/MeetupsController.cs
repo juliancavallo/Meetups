@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Services;
+using Services.Logger;
 
 namespace Santander.API.Controllers
 {
@@ -18,10 +19,10 @@ namespace Santander.API.Controllers
     [Route("api/[controller]")]
     public class MeetupsController : ControllerBase
     {
-        private readonly ILogger<MeetupsController> logger;
+        private readonly ILoggerService logger;
         private readonly IMeetupService meetupsService;
 
-        public MeetupsController(ILogger<MeetupsController> logger, IMeetupService meetupsService)
+        public MeetupsController(IMeetupService meetupsService, ILoggerService logger)
         {
             this.meetupsService = meetupsService;
             this.logger = logger;
@@ -32,10 +33,18 @@ namespace Santander.API.Controllers
         {
             try
             {
-                return Ok(meetupsService.Get(filter));
+                var result = meetupsService.Get(filter);
+                logger.LogInformation("MeetupsController > Get. OK");
+                return Ok(result);
+            }
+            catch (BadRequestException ex)
+            {
+                logger.LogError("MeetupsController > Get. ERROR 400", ex);
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
+                logger.LogError("MeetupsController > Get. ERROR 500", ex);
                 return StatusCode((int)System.Net.HttpStatusCode.InternalServerError);
             }
         }
@@ -51,14 +60,20 @@ namespace Santander.API.Controllers
                 if (meetup.MeetupDate == null)
                     throw new BadRequestException("The field MeetupDate must be completed");
 
-                return Ok(meetupsService.Create(meetup));
+                int userId = meetupsService.Create(meetup);
+
+                logger.LogInformation("MeetupsController > Create. OK. MeetupId: " + userId);
+
+                return Ok(userId);
             }
             catch(BadRequestException ex)
             {
+                logger.LogError("MeetupsController > Create. ERROR 400", ex);
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
+                logger.LogError("MeetupsController > Create. ERROR 500", ex);
                 return StatusCode((int)System.Net.HttpStatusCode.InternalServerError);
             }
         }
@@ -72,14 +87,19 @@ namespace Santander.API.Controllers
                     throw new BadRequestException("id must be greater than 0");
 
                 meetupsService.Delete(id);
+
+                logger.LogInformation("MeetupsController > Delete. OK. MeetupId: " + id);
+
                 return Ok();
             }
             catch (BadRequestException ex)
             {
+                logger.LogError("MeetupsController > Delete. ERROR 400", ex);
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
+                logger.LogError("MeetupsController > Delete. ERROR 500", ex);
                 return StatusCode((int)System.Net.HttpStatusCode.InternalServerError);
             }
         }
@@ -99,14 +119,19 @@ namespace Santander.API.Controllers
                     throw new BadRequestException("id must be greater than 0");
 
                 meetupsService.Update(meetup);
+
+                logger.LogInformation("MeetupsController > Update. OK. MeetupId: " + meetup.Id);
+
                 return Ok();
             }
             catch (BadRequestException ex)
             {
+                logger.LogError("MeetupsController > Update. ERROR 400", ex);
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
+                logger.LogError("MeetupsController > Update. ERROR 500", ex);
                 return StatusCode((int)System.Net.HttpStatusCode.InternalServerError);
             }
         }
@@ -118,14 +143,18 @@ namespace Santander.API.Controllers
             try
             {
                 /*Search meetup by id and add logged user to attendees*/
+                logger.LogInformation("MeetupsController > Update. OK. MeetupId: " + id + ", UserId: " + 0);
+
                 return Ok();
             }
             catch (BadRequestException ex)
             {
+                logger.LogError("MeetupsController > Join. ERROR 400", ex);
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
+                logger.LogError("MeetupsController > Join. ERROR 500", ex);
                 return StatusCode((int)System.Net.HttpStatusCode.InternalServerError);
             }
         }
