@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Providers
 {
-    public class MeetupsContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
-        public MeetupsContext (DbContextOptions<MeetupsContext> options)
+        public ApplicationDbContext (DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -23,14 +25,12 @@ namespace Providers
             modelBuilder.Entity<MeetupUsers>()
                 .HasOne(x => x.User);
 
-
             modelBuilder
                 .Entity<Meetup>()
                 .HasOne(x => x.Organizer)
                 .WithMany(x => x.OrganizedMeetups)
                 .HasForeignKey(x => x.OrganizerId)
                 .OnDelete(DeleteBehavior.Restrict);
-
         }
 
         public DbSet<Meetup> Meetup { get; set; }

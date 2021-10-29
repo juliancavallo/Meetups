@@ -12,7 +12,7 @@ namespace Domain.Models
         public int Id { get; set; }
 
         [Required()]
-        public string Name { get; set; }
+        public string FirstName { get; set; }
 
         [Required()]
         public string LastName { get; set; }
@@ -26,6 +26,6 @@ namespace Domain.Models
         public ICollection<Meetup> OrganizedMeetups { get; set; }
 
         [NotMapped]
-        public string FullName { get { return this.Name + " " + this.LastName; } }
+        public string FullName { get { return this.FirstName + " " + this.LastName; } }
     }
 }

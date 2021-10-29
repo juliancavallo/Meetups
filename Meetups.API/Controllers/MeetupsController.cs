@@ -21,11 +21,13 @@ namespace Meetups.API.Controllers
     {
         private readonly ILoggerService logger;
         private readonly IMeetupService meetupsService;
+        private readonly IUserService userService;
 
-        public MeetupsController(IMeetupService meetupsService, ILoggerService logger)
+        public MeetupsController(IMeetupService meetupsService, ILoggerService logger, IUserService userService)
         {
             this.meetupsService = meetupsService;
             this.logger = logger;
+            this.userService = userService;
         }
 
         [HttpGet]
@@ -142,7 +144,9 @@ namespace Meetups.API.Controllers
         {
             try
             {
-                var user = HttpContext.User.Identity.Name;
+                var user = userService.Get(new UserSearchFilter(HttpContext.User.Identity.Name));
+                var meetup = meetupsService.Get(new MeetupSearchFilter(id: id));
+
                 /*Search meetup by id and add logged user to attendees*/
                 logger.LogInformation("MeetupsController > Update. OK. MeetupId: " + id + ", UserId: " + 0);
 

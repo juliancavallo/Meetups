@@ -16,9 +16,9 @@ namespace Services
 {
     public class UserService : IUserService
     {
-        private readonly MeetupsContext context;
+        private readonly ApplicationDbContext context;
 
-        public UserService(MeetupsContext context)
+        public UserService(ApplicationDbContext context)
         {
             this.context = context;
         }
@@ -28,7 +28,7 @@ namespace Services
             var q = context.User.Where(x => true);
 
             if (!string.IsNullOrWhiteSpace(filter.Name))
-                q = q.Where(x => x.Name.Contains(filter.Name));
+                q = q.Where(x => x.FirstName.Contains(filter.Name));
 
             if (!string.IsNullOrWhiteSpace(filter.LastName))
                 q = q.Where(x => x.LastName.Contains(filter.LastName));
@@ -44,7 +44,7 @@ namespace Services
             try
             {
                 var user = new User();
-                user.Name = request.Name;
+                user.FirstName = request.Name;
                 user.LastName = request.LastName;
                 user.UserName = request.UserName;
                 user.Password = request.Password;
@@ -83,7 +83,7 @@ namespace Services
             try
             {
                 var user = context.User.First(x => x.Id == request.Id);
-                user.Name = request.Name;
+                user.FirstName = request.Name;
                 user.LastName = request.LastName;
                 user.UserName = request.UserName;
                 user.Password = request.Password;

@@ -31,7 +31,7 @@ namespace Meetups.API
             
             this.RegisterDI(services);
 
-            services.AddDbContext<MeetupsContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("MeetupsContext")));
 
             this.AddSwagger(services);
@@ -79,6 +79,14 @@ namespace Meetups.API
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Meetups API V1");
             });
+
+            var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+            using (var scope = scopeFactory.CreateScope())
+            {
+                var dbInitializer = scope.ServiceProvider.GetService<IDbInitializer>();
+                dbInitializer.Initialize();
+                dbInitializer.SeedData();
+            }
         }
 
         private void AddSwagger(IServiceCollection services)
@@ -127,6 +135,7 @@ namespace Meetups.API
             services.AddScoped<IWeatherAPIService, WeatherAPIService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILoggerService, LoggerService>();
+            services.AddScoped<IDbInitializer, DbInitializer>();
         }
     }
 }

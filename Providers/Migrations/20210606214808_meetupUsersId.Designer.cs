@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Providers.Migrations
 {
-    [DbContext(typeof(MeetupsContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20210606214808_meetupUsersId")]
     partial class meetupUsersId
     {

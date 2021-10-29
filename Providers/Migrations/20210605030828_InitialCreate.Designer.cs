@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Providers.Migrations
 {
-    [DbContext(typeof(MeetupsContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20210605030828_InitialCreate")]
     partial class InitialCreate
     {

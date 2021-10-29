@@ -16,10 +16,10 @@ namespace Services
 {
     public class MeetupService : IMeetupService
     {
-        private readonly MeetupsContext context;
+        private readonly ApplicationDbContext context;
         private readonly IWeatherAPIService weatherAPIService;
 
-        public MeetupService(MeetupsContext context, IWeatherAPIService weatherAPIService)
+        public MeetupService(ApplicationDbContext context, IWeatherAPIService weatherAPIService)
         {
             this.context = context;
             this.weatherAPIService = weatherAPIService;
@@ -32,12 +32,14 @@ namespace Services
             if (!string.IsNullOrWhiteSpace(filter.Description))
                 q = q.Where(x => x.Description.Contains(filter.Description));
 
-            if (filter.DateFrom != null)
-                q = q.Where(x => x.MeetupDate > filter.DateFrom);
+            if (filter.DateFrom.HasValue)
+                q = q.Where(x => x.MeetupDate > filter.DateFrom.Value);
 
+            if (filter.DateTo.HasValue)
+                q = q.Where(x => x.MeetupDate < filter.DateTo.Value);
 
-            if (filter.DateTo != null)
-                q = q.Where(x => x.MeetupDate < filter.DateTo);
+            if (filter.Id.HasValue)
+                q = q.Where(x => x.Id == filter.Id.Value);
 
             return q.ToList();
         }
