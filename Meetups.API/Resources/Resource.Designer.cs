@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Santander_Tecnologia.Resources {
+namespace Meetups.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Santander_Tecnologia.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Santander_Tecnologia.Resources.Resource", typeof(Resource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Meetups.Resources.Resource", typeof(Resource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -160,7 +160,7 @@ namespace Santander_Tecnologia.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Santander Tecnología - Challenge.
+        ///   Busca una cadena traducida similar a Meetups Tecnología - Challenge.
         /// </summary>
         public static string HomeTitle {
             get {

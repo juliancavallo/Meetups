@@ -13,7 +13,7 @@ namespace Providers
             return Convert.ToBase64String(bytes);
         }
 
-        public static void Initialize(Santander_TecnologiaContext context)
+        public static void Initialize(MeetupsContext context)
         {
             if (context.User.Any())
                 return;

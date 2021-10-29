@@ -160,7 +160,7 @@ namespace Domain.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Santander Tecnología - Challenge.
+        ///   Busca una cadena traducida similar a Meetups Tecnología - Challenge.
         /// </summary>
         public static string HomeTitle {
             get {

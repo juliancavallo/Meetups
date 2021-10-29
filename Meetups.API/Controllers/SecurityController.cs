@@ -15,7 +15,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Santander.API.Controllers
+namespace Meetups.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

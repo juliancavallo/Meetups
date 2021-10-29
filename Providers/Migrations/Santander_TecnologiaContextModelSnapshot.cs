@@ -7,8 +7,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Providers.Migrations
 {
-    [DbContext(typeof(Santander_TecnologiaContext))]
-    partial class Santander_TecnologiaContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(MeetupsContext))]
+    partial class MeetupsContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

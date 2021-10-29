@@ -13,7 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Services.Logger;
 
-namespace Santander.API
+namespace Meetups.API
 {
     public class Startup
     {
@@ -31,8 +31,8 @@ namespace Santander.API
             
             this.RegisterDI(services);
 
-            services.AddDbContext<Santander_TecnologiaContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("Santander_TecnologiaContext")));
+            services.AddDbContext<MeetupsContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("MeetupsContext")));
 
             this.AddSwagger(services);
 
@@ -77,7 +77,7 @@ namespace Santander.API
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "SantanderTecnologia API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Meetups API V1");
             });
         }
 
@@ -89,7 +89,7 @@ namespace Santander.API
 
                 options.SwaggerDoc(groupName, new OpenApiInfo
                 {
-                    Title = $"SantanderTecnologia {groupName}",
+                    Title = $"Meetups {groupName}",
                     Version = groupName,
                     Description = "Meetup Beers API"
                 });

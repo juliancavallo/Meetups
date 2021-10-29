@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Providers
 {
-    public class Santander_TecnologiaContext : DbContext
+    public class MeetupsContext : DbContext
     {
-        public Santander_TecnologiaContext (DbContextOptions<Santander_TecnologiaContext> options)
+        public MeetupsContext (DbContextOptions<MeetupsContext> options)
             : base(options)
         {
         }

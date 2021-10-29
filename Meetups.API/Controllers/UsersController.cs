@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 using Services;
 using Services.Logger;
 
-namespace Santander.API.Controllers
+namespace Meetups.API.Controllers
 {
     [Route("api/[controller]")]
     [Authorize]

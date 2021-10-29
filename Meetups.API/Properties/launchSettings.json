@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Santander.API": {
+    "Meetups.API": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{63F0A0A4-7A31-4575-917E-173CAA4D8C93}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Santander.API", "Santander.API\Santander.API.csproj", "{D4F56D7B-4C1E-4C45-8E8E-9145C5DB88C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meetups.API", "Meetups.API\Meetups.API.csproj", "{D4F56D7B-4C1E-4C45-8E8E-9145C5DB88C3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Providers", "Providers\Providers.csproj", "{FF9E6823-D813-40BC-9A68-90D2517A72A0}"
 EndProject

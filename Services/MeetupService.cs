@@ -16,10 +16,10 @@ namespace Services
 {
     public class MeetupService : IMeetupService
     {
-        private readonly Santander_TecnologiaContext context;
+        private readonly MeetupsContext context;
         private readonly IWeatherAPIService weatherAPIService;
 
-        public MeetupService(Santander_TecnologiaContext context, IWeatherAPIService weatherAPIService)
+        public MeetupService(MeetupsContext context, IWeatherAPIService weatherAPIService)
         {
             this.context = context;
             this.weatherAPIService = weatherAPIService;

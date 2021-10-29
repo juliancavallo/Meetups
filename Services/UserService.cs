@@ -16,9 +16,9 @@ namespace Services
 {
     public class UserService : IUserService
     {
-        private readonly Santander_TecnologiaContext context;
+        private readonly MeetupsContext context;
 
-        public UserService(Santander_TecnologiaContext context)
+        public UserService(MeetupsContext context)
         {
             this.context = context;
         }

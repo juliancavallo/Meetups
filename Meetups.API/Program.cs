@@ -9,7 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Providers;
 
-namespace Santander.API
+namespace Meetups.API
 {
     public class Program
     {
@@ -29,7 +29,7 @@ namespace Santander.API
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var context = services.GetRequiredService<Santander_TecnologiaContext>();
+                    var context = services.GetRequiredService<MeetupsContext>();
                     context.Database.EnsureCreated();
                     DbInitializer.Initialize(context);
                 }
