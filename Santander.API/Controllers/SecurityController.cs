@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,7 +43,7 @@ namespace Santander.API.Controllers
                 bool result = ValidateUser(loginDetails);
                 if (result)
                 {
-                    var tokenString = GenerateJWT();
+                    var tokenString = GenerateJWT(loginDetails.User);
                     logger.LogInformation("SecurityController > Login. OK. Token = " + tokenString);
                     return Ok(new { token = tokenString });
                 }
@@ -64,17 +65,29 @@ namespace Santander.API.Controllers
             }
         }
 
-        private string GenerateJWT()
+        private string GenerateJWT(string userName)
         {
-            var expiry = DateTime.Now.AddMinutes(120);
+            var expiry = DateTime.Now.AddHours(4);
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(expires: expiry, signingCredentials: credentials);
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, userName),
+            };
+
+            var creds = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = expiry,
+                SigningCredentials = creds
+            };
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var stringToken = tokenHandler.WriteToken(token);
-            return stringToken;
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return tokenHandler.WriteToken(token);
         }
 
         private bool ValidateUser(LoginRequest loginDetails)

@@ -142,6 +142,7 @@ namespace Santander.API.Controllers
         {
             try
             {
+                var user = HttpContext.User.Identity.Name;
                 /*Search meetup by id and add logged user to attendees*/
                 logger.LogInformation("MeetupsController > Update. OK. MeetupId: " + id + ", UserId: " + 0);
 
