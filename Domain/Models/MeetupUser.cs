@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Domain.Models
 {
-    public class MeetupUsers
+    public class MeetupUser
     {
         public int Id { get; set; }
         [Required]

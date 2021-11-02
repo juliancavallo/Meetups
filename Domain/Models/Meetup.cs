@@ -24,7 +24,7 @@ namespace Domain.Models
         public string Description { get; set; }
 
         [NotMapped]
-        public ICollection<MeetupUsers> Attendees { get; set; }
+        public ICollection<MeetupUser> Attendees { get; set; }
 
         [NotMapped]
         public int BeerBoxQuantity

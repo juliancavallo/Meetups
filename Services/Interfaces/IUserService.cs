@@ -17,6 +17,6 @@ namespace Services
 
         void Update(UserRequest request);
 
-        bool ValidateLogin(LoginRequest loginDetails);
+        User ValidateLogin(LoginRequest loginDetails);
     }
 }

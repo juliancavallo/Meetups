@@ -109,6 +109,23 @@ namespace Services
             }
         }
 
+        public void Join(int userId, int meetupId)
+        {
+            var user = context.User.First(x => x.Id == userId);
+            var meetup = context.Meetup.First(x => x.Id == meetupId);
+
+            var attendee = new MeetupUser()
+            {
+                MeetupId = meetupId,
+                UserId = user.Id
+            };
+
+            meetup.Attendees.Add(attendee);
+
+            context.Update(meetup);
+            context.SaveChanges();
+        }
+
         #region Private methods
         private void AddAttendees(Meetup meetup, List<int> attendees)
         {
@@ -116,7 +133,7 @@ namespace Services
             foreach (var id in attendees)
             {
                 var user = context.User.FirstOrDefault(x => x.Id == id);
-                meetup.Attendees.Add(new MeetupUsers() { Meetup = meetup, User = user });
+                meetup.Attendees.Add(new MeetupUser() { Meetup = meetup, User = user });
             }
         }
 
@@ -124,12 +141,12 @@ namespace Services
         {
             if (meetup.Id > 0)
             {
-                var toRemove = context.MeetupUsers.Where(x => x.MeetupId == meetup.Id);
+                var toRemove = context.MeetupUser.Where(x => x.MeetupId == meetup.Id);
 
-                context.MeetupUsers.RemoveRange(toRemove);
+                context.MeetupUser.RemoveRange(toRemove);
 
             }
-            meetup.Attendees = new List<MeetupUsers>();
+            meetup.Attendees = new List<MeetupUser>();
         }
         #endregion
     }

@@ -97,9 +97,9 @@ namespace Services
             }
         }   
         
-        public bool ValidateLogin(LoginRequest loginDetails)
+        public User ValidateLogin(LoginRequest loginDetails)
         {
-            return context.User.Any(x => x.UserName == loginDetails.User && x.Password == loginDetails.Password);
+            return context.User.FirstOrDefault(x => x.UserName == loginDetails.User && x.Password == loginDetails.Password);
         }
     }
 }

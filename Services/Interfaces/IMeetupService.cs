@@ -17,5 +17,7 @@ namespace Services
         void Delete(int id);
 
         void Update(MeetupRequest request);
+
+        void Join(int userId, int meetupId);
     }
 }

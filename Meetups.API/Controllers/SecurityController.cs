@@ -40,10 +40,10 @@ namespace Meetups.API.Controllers
         {
             try
             {
-                bool result = ValidateUser(loginDetails);
-                if (result)
+                var user = ValidateUser(loginDetails);
+                if (user != null)
                 {
-                    var tokenString = GenerateJWT(loginDetails.User);
+                    var tokenString = GenerateJWT(user);
                     logger.LogInformation("SecurityController > Login. OK. Token = " + tokenString);
                     return Ok(new { token = tokenString });
                 }
@@ -65,14 +65,15 @@ namespace Meetups.API.Controllers
             }
         }
 
-        private string GenerateJWT(string userName)
+        private string GenerateJWT(User user)
         {
             var expiry = DateTime.Now.AddHours(4);
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, userName),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             };
 
             var creds = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -90,7 +91,7 @@ namespace Meetups.API.Controllers
             return tokenHandler.WriteToken(token);
         }
 
-        private bool ValidateUser(LoginRequest loginDetails)
+        private User ValidateUser(LoginRequest loginDetails)
         {
             loginDetails.Password = securityService.Encrypt(loginDetails.Password);
             return userService.ValidateLogin(loginDetails);

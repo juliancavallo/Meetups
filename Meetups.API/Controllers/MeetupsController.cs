@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Domain.Exceptions;
 using Domain.Filters;
@@ -21,13 +22,11 @@ namespace Meetups.API.Controllers
     {
         private readonly ILoggerService logger;
         private readonly IMeetupService meetupsService;
-        private readonly IUserService userService;
 
-        public MeetupsController(IMeetupService meetupsService, ILoggerService logger, IUserService userService)
+        public MeetupsController(IMeetupService meetupsService, ILoggerService logger)
         {
             this.meetupsService = meetupsService;
             this.logger = logger;
-            this.userService = userService;
         }
 
         [HttpGet]
@@ -144,11 +143,10 @@ namespace Meetups.API.Controllers
         {
             try
             {
-                var user = userService.Get(new UserSearchFilter(HttpContext.User.Identity.Name));
-                var meetup = meetupsService.Get(new MeetupSearchFilter(id: id));
+                var loggedUserId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+                meetupsService.Join(int.Parse(loggedUserId), id);
 
-                /*Search meetup by id and add logged user to attendees*/
-                logger.LogInformation("MeetupsController > Update. OK. MeetupId: " + id + ", UserId: " + 0);
+                logger.LogInformation("MeetupsController > Update. OK. Join: " + id + ", UserId: " + loggedUserId);
 
                 return Ok();
             }

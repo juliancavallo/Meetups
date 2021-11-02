@@ -22,7 +22,7 @@ namespace Providers
                 .HasMany(c => c.Attendees)
                 .WithOne(e => e.Meetup);
 
-            modelBuilder.Entity<MeetupUsers>()
+            modelBuilder.Entity<MeetupUser>()
                 .HasOne(x => x.User);
 
             modelBuilder
@@ -37,6 +37,6 @@ namespace Providers
 
         public DbSet<User> User { get; set; }
 
-        public DbSet<MeetupUsers> MeetupUsers { get; set; }
+        public DbSet<MeetupUser> MeetupUser { get; set; }
     }
 }
