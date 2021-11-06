@@ -1,11 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Domain.Requests
+﻿namespace Domain.Requests
 {
     public class UserRequest
     {
+        public UserRequest() { }
+        public UserRequest(string name, string lastName, string userName, string password, int id = 0)
+        {
+            this.Name = name;
+            this.LastName = lastName;
+            this.UserName = userName;
+            this.Password = password;
+            this.Id = id;
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }

@@ -8,9 +8,13 @@ namespace Domain.Filters
     {
         public UserSearchFilter(string userName = null, string lastName = null, string firstName = null)
         {
-            this.Name = userName;
+            this.UserName = userName;
+            this.LastName = lastName;
+            this.FirstName = firstName;
         }
-        public string Name { get; set; }
+
+
+        public string FirstName { get; set; }
         public string LastName { get; set; }
         public string UserName { get; set; }
     }

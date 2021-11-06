@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Domain.Exceptions;
 using Domain.Filters;
 using Domain.Requests;
+using Domain.Responses;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Services;
 using Services.Logger;
 
@@ -32,7 +28,7 @@ namespace Meetups.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult Get([FromQuery]UserSearchFilter filter)
+        public IActionResult Get([FromQuery] UserSearchFilter filter)
         {
             try
             {
@@ -53,7 +49,7 @@ namespace Meetups.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(UserRequest user)
+        public IActionResult Create(UserRequest user)
         {
             try
             {
@@ -89,7 +85,7 @@ namespace Meetups.API.Controllers
         }
 
         [HttpPut]
-        public ActionResult Update(UserRequest user)
+        public IActionResult Update(UserRequest user)
         {
             try
             {
@@ -111,7 +107,7 @@ namespace Meetups.API.Controllers
                 user.Password = securityService.Encrypt(user.Password);
                 userService.Update(user);
 
-                logger.LogInformation("UsersController > Create. OK. UserId: " + user.Id);
+                logger.LogInformation("UsersController > Update. OK. UserId: " + user.Id);
 
                 return Ok();
             }
@@ -128,7 +124,7 @@ namespace Meetups.API.Controllers
         }
 
         [HttpDelete]
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             try
             {

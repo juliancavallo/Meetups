@@ -1,20 +1,22 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Providers;
 using Services;
-using Microsoft.OpenApi.Models;
-using System;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Services.Logger;
+using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace Meetups.API
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -93,15 +95,6 @@ namespace Meetups.API
         {
             services.AddSwaggerGen(options =>
             {
-                var groupName = "v1";
-
-                options.SwaggerDoc(groupName, new OpenApiInfo
-                {
-                    Title = $"Meetups {groupName}",
-                    Version = groupName,
-                    Description = "Meetup Beers API"
-                });
-
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.Http,
@@ -136,6 +129,7 @@ namespace Meetups.API
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILoggerService, LoggerService>();
             services.AddScoped<IDbInitializer, DbInitializer>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
     }
 }

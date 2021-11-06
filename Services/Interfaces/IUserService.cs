@@ -1,6 +1,7 @@
 ﻿using Domain.Filters;
 using Domain.Models;
 using Domain.Requests;
+using Domain.Responses;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,7 @@ namespace Services
 {
     public interface IUserService
     {
-        List<User> Get(UserSearchFilter filter);
+        UsersSearchResponse Get(UserSearchFilter filter);
 
         int Create(UserRequest request);
 

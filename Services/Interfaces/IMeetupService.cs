@@ -5,12 +5,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Filters;
+using Domain.Responses;
 
 namespace Services
 {
     public interface IMeetupService
     {
-        List<Meetup> Get(MeetupSearchFilter filter);
+        MeetupsSearchResponse Get(MeetupSearchFilter filter);
 
         int Create(MeetupRequest request);
 

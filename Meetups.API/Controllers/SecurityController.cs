@@ -36,7 +36,7 @@ namespace Meetups.API.Controllers
 
         [HttpPost]
         [Route("Login", Name ="Login")]
-        public ActionResult Login(LoginRequest loginDetails)
+        public IActionResult Login(LoginRequest loginDetails)
         {
             try
             {

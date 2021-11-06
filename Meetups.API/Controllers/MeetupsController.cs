@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Domain.Exceptions;
 using Domain.Filters;
-using Domain.Models;
 using Domain.Requests;
+using Domain.Responses;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Services;
 using Services.Logger;
 
@@ -22,15 +20,17 @@ namespace Meetups.API.Controllers
     {
         private readonly ILoggerService logger;
         private readonly IMeetupService meetupsService;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public MeetupsController(IMeetupService meetupsService, ILoggerService logger)
+        public MeetupsController(IMeetupService meetupsService, ILoggerService logger, IHttpContextAccessor httpContextAccessor)
         {
             this.meetupsService = meetupsService;
             this.logger = logger;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet]
-        public ActionResult<List<Meetup>> Get([FromQuery]MeetupSearchFilter filter)
+        public IActionResult Get([FromQuery]MeetupSearchFilter filter)
         {
             try
             {
@@ -51,14 +51,14 @@ namespace Meetups.API.Controllers
         }
 
         [HttpPost("Create", Name = "Create")]
-        public ActionResult Create(MeetupRequest meetup)
+        public IActionResult Create(MeetupRequest meetup)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(meetup.Description))
                     throw new BadRequestException("The field Description must be completed");
 
-                if (meetup.MeetupDate == null)
+                if (meetup.MeetupDate == DateTime.MinValue)
                     throw new BadRequestException("The field MeetupDate must be completed");
 
                 int userId = meetupsService.Create(meetup);
@@ -80,7 +80,7 @@ namespace Meetups.API.Controllers
         }
 
         [HttpDelete]
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             try
             {
@@ -106,14 +106,14 @@ namespace Meetups.API.Controllers
         }
 
         [HttpPut]
-        public ActionResult Update(MeetupRequest meetup)
+        public IActionResult Update(MeetupRequest meetup)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(meetup.Description))
                     throw new BadRequestException("The field Description must be completed");
 
-                if (meetup.MeetupDate == null)
+                if (meetup.MeetupDate == DateTime.MinValue)
                     throw new BadRequestException("The field MeetupDate must be completed");
 
                 if (meetup.Id < 1)
@@ -139,11 +139,11 @@ namespace Meetups.API.Controllers
 
         [HttpPost]
         [Route("Join", Name = "Join")]
-        public ActionResult Join(int id)
+        public IActionResult Join(int id)
         {
             try
             {
-                var loggedUserId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+                var loggedUserId = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
                 meetupsService.Join(int.Parse(loggedUserId), id);
 
                 logger.LogInformation("MeetupsController > Update. OK. Join: " + id + ", UserId: " + loggedUserId);

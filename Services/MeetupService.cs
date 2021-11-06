@@ -25,7 +25,7 @@ namespace Services
             this.weatherAPIService = weatherAPIService;
         }
 
-        public List<Meetup> Get(MeetupSearchFilter filter)
+        public MeetupsSearchResponse Get(MeetupSearchFilter filter)
         {
             var q = context.Meetup.Include(m => m.Organizer).Include("Attendees.User");
 
@@ -41,7 +41,11 @@ namespace Services
             if (filter.Id.HasValue)
                 q = q.Where(x => x.Id == filter.Id.Value);
 
-            return q.ToList();
+            return new MeetupsSearchResponse()
+            {
+                Meetups = q.ToList()
+            };
+            
         }
 
         public int Create(MeetupRequest request)

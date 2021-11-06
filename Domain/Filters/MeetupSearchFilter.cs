@@ -14,6 +14,8 @@ namespace Domain.Filters
             this.Id = id;
         }
 
+        public MeetupSearchFilter() { }
+
         public string Description { get; set; }
 
         public DateTime? DateFrom { get; set; }

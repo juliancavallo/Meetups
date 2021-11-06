@@ -2,15 +2,9 @@
 using Domain.Models;
 using Domain.Requests;
 using Domain.Responses;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using Providers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services
 {
@@ -23,12 +17,12 @@ namespace Services
             this.context = context;
         }
 
-        public List<User> Get(UserSearchFilter filter)
+        public UsersSearchResponse Get(UserSearchFilter filter)
         {
             var q = context.User.Where(x => true);
 
-            if (!string.IsNullOrWhiteSpace(filter.Name))
-                q = q.Where(x => x.FirstName.Contains(filter.Name));
+            if (!string.IsNullOrWhiteSpace(filter.FirstName))
+                q = q.Where(x => x.FirstName.Contains(filter.FirstName));
 
             if (!string.IsNullOrWhiteSpace(filter.LastName))
                 q = q.Where(x => x.LastName.Contains(filter.LastName));
@@ -36,18 +30,23 @@ namespace Services
             if (!string.IsNullOrWhiteSpace(filter.UserName))
                 q = q.Where(x => x.UserName.Contains(filter.UserName));
 
-            return q.ToList();
+            return new UsersSearchResponse()
+            { 
+                Users = q.ToList()
+            };
         }
 
         public int Create(UserRequest request)
         {
             try
             {
-                var user = new User();
-                user.FirstName = request.Name;
-                user.LastName = request.LastName;
-                user.UserName = request.UserName;
-                user.Password = request.Password;
+                var user = new User
+                {
+                    FirstName = request.Name,
+                    LastName = request.LastName,
+                    UserName = request.UserName,
+                    Password = request.Password
+                };
 
                 context.Add(user);
                 context.SaveChanges();
