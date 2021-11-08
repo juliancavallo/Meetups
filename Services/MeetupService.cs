@@ -67,9 +67,9 @@ namespace Services
 
                 return meetup.Id;
             }
-            catch(Exception ex)
+            catch(Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -85,9 +85,9 @@ namespace Services
                 context.Meetup.Remove(meetup);
                 context.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -107,9 +107,9 @@ namespace Services
                 context.Update(meetup);
                 context.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 

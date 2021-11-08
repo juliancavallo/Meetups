@@ -53,9 +53,9 @@ namespace Services
 
                 return user.Id;
             }
-            catch(Exception ex)
+            catch(Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -71,9 +71,9 @@ namespace Services
                 context.User.Remove(user);
                 context.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -90,9 +90,9 @@ namespace Services
                 context.Update(user);
                 context.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }   
         
