@@ -1,12 +1,11 @@
 ﻿using System;
-using Domain.Exceptions;
-using Domain.Filters;
-using Domain.Requests;
-using Domain.Responses;
+using Meetups.Domain.Exceptions;
+using Meetups.Domain.Filters;
+using Meetups.Domain.Models.Requests;
+using Meetups.Domain.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Services;
-using Services.Logger;
+using Meetups.Domain.Interfaces.Services;
 
 namespace Meetups.API.Controllers
 {

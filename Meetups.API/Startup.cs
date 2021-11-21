@@ -8,11 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Providers;
-using Services;
-using Services.Logger;
+using Meetups.Providers;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using Meetups.Domain.Interfaces.Services;
+using Meetups.Services;
 
 namespace Meetups.API
 {

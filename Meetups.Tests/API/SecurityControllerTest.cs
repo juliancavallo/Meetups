@@ -1,17 +1,14 @@
-﻿using Domain.Exceptions;
-using Domain.Models;
-using Domain.Requests;
+﻿using Meetups.Domain.Exceptions;
+using Meetups.Domain.Models.Entities;
+using Meetups.Domain.Models.Requests;
 using Meetups.API.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using NUnit.Framework;
-using Services;
-using Services.Logger;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using Meetups.Domain.Interfaces.Services;
 
 namespace Meetups.Tests.API
 {

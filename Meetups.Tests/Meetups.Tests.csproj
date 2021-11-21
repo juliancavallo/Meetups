@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Meetups.API\Meetups.API.csproj" />
-    <ProjectReference Include="..\Services\Services.csproj" />
+    <ProjectReference Include="..\Meetups.Services\Meetups.Services.csproj" />
   </ItemGroup>
 
 </Project>
